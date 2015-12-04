@@ -39,7 +39,7 @@ public class HalTest {
 
 	private static final String username = "redfox";
 	private static final String password = "11111111";
-	private String login = "http://localhost:8080/simpleworkflow-camunda/api/admin/auth/user/default/login/tasklist";
+	private static final String login = "http://localhost:8080/simpleworkflow-camunda/api/admin/auth/user/default/login/tasklist";
 
 	@Test
 	public void testLogin() {

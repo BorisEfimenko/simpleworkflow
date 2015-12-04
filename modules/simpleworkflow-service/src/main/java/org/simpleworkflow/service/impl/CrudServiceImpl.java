@@ -1,5 +1,6 @@
 package org.simpleworkflow.service.impl;
 
+import java.util.Locale;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -98,19 +99,19 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends PagingAndSortin
 
 	@Override
 	public Page<T> findPaginated(Integer page, Integer size, String direction, String properties) {
-		page = (page != null) ? page : 1;
-		size = (size != null) ? size : 10;
+		Integer iPage = (page == null) ? 1 : page;
+		Integer iSize = (size == null) ? 10 : size;
 		Assert.isTrue(page > 0, "Page index must be greater than 0");
 		Assert.isTrue(
 				direction.isEmpty() || direction.equalsIgnoreCase(Sort.Direction.ASC.toString())
 						|| direction.equalsIgnoreCase(Sort.Direction.DESC.toString()),
 				"Direction should be ASC or DESC");
 		if (direction.isEmpty()) {
-			return this.repository.findAll(new PageRequest(page - 1, size));
+			return this.repository.findAll(new PageRequest(iPage - 1, iSize));
 		} else {
 			Assert.notNull(properties);
-			return this.repository.findAll(new PageRequest(page - 1, size,
-					new Sort(Sort.Direction.fromString(direction.toUpperCase()), properties.split(","))));
+			return this.repository.findAll(new PageRequest(iPage - 1, iSize,
+					new Sort(Sort.Direction.fromString(direction.toUpperCase(Locale.ENGLISH)), properties.split(","))));
 		}
 	}
 
