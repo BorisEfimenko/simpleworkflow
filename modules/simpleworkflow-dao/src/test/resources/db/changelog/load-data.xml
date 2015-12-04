@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+
+	<changeSet id="load data for test database" author="redfox">
+
+		<loadData schemaName="swf" tableName="APPROVE_TYPE" file="db/csv/approve_type.csv"
+			separator=",">
+			<column name="ID" type="NUMERIC" />
+			<column name="VERSION" type="NUMERIC" />
+			<column name="APPROVE_TYPE_NAME" type="STRING" />
+			<column name="DESCRIPTIONS" type="STRING" />
+		</loadData>
+		<loadData schemaName="swf" tableName="APPROVE" file="db/csv/approve.csv"
+			separator=",">
+			<column name="ID" type="NUMERIC" />
+			<column name="VERSION" type="NUMERIC" />
+			<column name="APPROVE_TYPE_ID" type="NUMERIC" />
+			<column name="BEGIN_DATE" type="DATE" />
+			<column name="END_DATE" type="DATE" />
+			<column name="PROCESS_DEFINITION_KEY" type="STRING"/>
+			<column name="PROCESS_DEFINITION_VERSION" type="STRING"/>
+		</loadData>
+	</changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+	<changeSet id="create schema" author="redfox">
+		<sql>create schema swf;</sql>
+	</changeSet>
+
+	<changeSet id="create table approve_type" author="redfox">
+		<createTable schemaName="swf" tableName="APPROVE_TYPE">
+			<column name="ID" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VERSION" type="bigint" />
+			<column name="APPROVE_TYPE_NAME" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="DESCRIPTIONS" type="varchar(255)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="create table approve" author="redfox">
+		<createTable schemaName="swf" tableName="APPROVE">
+			<column name="ID" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VERSION" type="bigint" />
+			<column name="APPROVE_TYPE_ID" type="bigint">
+				<constraints nullable="false" foreignKeyName="FK_APPROVE_APPROVE_TYPE_ID"
+					referencedTableName="APPROVE_TYPE" referencedColumnNames="ID" />
+			</column>
+			<column name="BEGIN_DATE" type="date">
+				<constraints nullable="true" />
+			</column>
+			<column name="END_DATE" type="date">
+				<constraints nullable="true" />
+			</column>
+			<column name="PROCESS_DEFINITION_KEY" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+			<column name="PROCESS_DEFINITION_VERSION" type="varchar(64)">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet id="create table doc_type" author="redfox">
+		<createTable schemaName="swf" tableName="DOCUMENT_TYPE">
+			<column name="ID" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VERSION" type="bigint" />
+			<column name="TYPE_NAME" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="APPROVE_TYPE_ID" type="bigint">
+				<constraints nullable="true" foreignKeyName="FK_DOC_TYPE_APPROVE_TYPE_ID"
+					referencedTableName="APPROVE_TYPE" referencedColumnNames="ID" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet id="create table document" author="redfox">
+		<createTable schemaName="swf" tableName="DOCUMENT">
+			<column name="ID" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="VERSION" type="bigint" />
+			<column name="DOCUMENT_NO" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="DOC_DATE" type="date">
+				<constraints nullable="false" />
+			</column>
+			<column name="DOCUMENT_TYPE_ID" type="bigint">
+				<constraints nullable="false" foreignKeyName="FK_DOCUMENT_DOC_TYPE_ID"
+					referencedTableName="DOCUMENT_TYPE" referencedColumnNames="ID" />
+			</column>
+		</createTable>
+	</changeSet>
+
+</databaseChangeLog>
