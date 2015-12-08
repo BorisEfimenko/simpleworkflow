@@ -1,5 +1,6 @@
 package org.simpleworkflow.service.impl;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -7,16 +8,17 @@ import javax.transaction.Transactional;
 
 import org.simpleworkflow.domain.AbstractEntity;
 import org.simpleworkflow.exception.NotFoundException;
+import org.simpleworkflow.repository.iface.JpaCrudRepository;
 import org.simpleworkflow.service.CrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 
 @Transactional
-public class CrudServiceImpl<T extends AbstractEntity, R extends PagingAndSortingRepository<T, Long>>
+public class CrudServiceImpl<T extends AbstractEntity, R extends JpaCrudRepository<T, Long>>
 		implements CrudService<T, R> {
 	
 	protected R repository;
@@ -98,10 +100,10 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends PagingAndSortin
 	}
 
 	@Override
-	public Page<T> findPaginated(Integer page, Integer size, String direction, String properties) {
-		Integer iPage = (page == null) ? 1 : page;
-		Integer iSize = (size == null) ? 10 : size;
-		Assert.isTrue(page > 0, "Page index must be greater than 0");
+	public Page<T> findPaginated(Integer pageNumber, Integer pageSize, String direction, String properties) {
+		Integer iPage = (pageNumber == null) ? 1 : pageNumber;
+		Integer iSize = (pageSize == null) ? 10 : pageSize;
+		Assert.isTrue(pageNumber > 0, "Page index must be greater than 0");
 		Assert.isTrue(
 				direction.isEmpty() || direction.equalsIgnoreCase(Sort.Direction.ASC.toString())
 						|| direction.equalsIgnoreCase(Sort.Direction.DESC.toString()),
@@ -120,5 +122,40 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends PagingAndSortin
 		return repository.count();
 	}
 
+  @Override
+  public T findOne(T example) {
+    Specification<T> spec=getSpecByExample(example);     
+    return repository.findOne(spec);
+  }
+
+  @Override
+  public List<T> findAll(T example) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Page<T> findAll(T example, Pageable pageable) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<T> findAll(T example, Sort sort) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public long count(T example) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  private Specification<T> getSpecByExample(T example) {
+    // TODO Auto-generated method stub
+
+    return null;
+  }
 
 }

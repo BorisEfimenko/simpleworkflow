@@ -10,34 +10,58 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="DOCUMENT")
-public class Document  extends AbstractEntity {
-	private static final long serialVersionUID = 1L;
+@Table(name = "DOCUMENT")
+public class Document extends AbstractEntity {
 
-	@Column(name = "DOCUMENT_NO", nullable = false)
-	private String no;
-	
-	@Column(name = "DOCUMENT_DATE", nullable = false)
-	private Date date;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DOC_TYPE_ID")
-	private DocType docType;
+  private static final long serialVersionUID = 1L;
 
-    @Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Document [id=");
-		builder.append(id);
-		builder.append(", no=");
-		builder.append(no);		
-		builder.append(", date=");
-		builder.append(date);
-		builder.append(", docType=");
-		builder.append(docType.getName());
-		builder.append("]");
-		return builder.toString();
-	}
+  @Column(name = "DOCUMENT_NO", nullable = false)
+  private String no;
 
- 
+  @Column(name = "DOCUMENT_DATE", nullable = false)
+  private Date date;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "DOC_TYPE_ID")
+  private DocumentType docType;
+
+  public String getNo() {
+    return no;
+  }
+
+  public void setNo(String no) {
+    this.no = no;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public DocumentType getDocType() {
+    return docType;
+  }
+
+  public void setDocType(DocumentType docType) {
+    this.docType = docType;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("Document [id=");
+    builder.append(id);
+    builder.append(", no=");
+    builder.append(no);
+    builder.append(", date=");
+    builder.append(date);
+    builder.append(", docType=");
+    builder.append(docType.getName());
+    builder.append("]");
+    return builder.toString();
+  }
+
 }

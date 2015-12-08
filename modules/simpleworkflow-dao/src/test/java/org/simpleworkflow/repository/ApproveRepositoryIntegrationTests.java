@@ -22,6 +22,7 @@ import org.simpleworkflow.RepositoryApplication;
 import org.simpleworkflow.domain.Approve;
 import org.simpleworkflow.repository.specification.PlainSpecification;
 import org.simpleworkflow.repository.specification.SearchCriteria;
+import org.simpleworkflow.repository.specification.SpecificationConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,8 @@ public class ApproveRepositoryIntegrationTests {
   ApproveRepository repository;
   private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
   Approve approve1, approve2, approve3;
+  @Autowired
+  SpecificationConvertService specificationConvertService;
   @Rule
   public ExternalResource resource = new ExternalResource() {
 
@@ -64,10 +67,10 @@ public class ApproveRepositoryIntegrationTests {
     assertThat(actualApprove, is(equalTo(approve1)));
     date = formatter.parse("01.06.2014");
     actualApprove = repository.getActualApprove(1l, date);
-    assertThat(actualApprove, is(repository.findOne(2L)));
+    assertThat(actualApprove, is(approve2));
     date = formatter.parse("01.07.2015");
     actualApprove = repository.getActualApprove(1l, date);
-    assertThat(actualApprove, is(repository.findOne(3L)));
+    assertThat(actualApprove, is(approve3));
   }
 
   @Test
@@ -88,17 +91,28 @@ public class ApproveRepositoryIntegrationTests {
   }
 
   @Test
-  public void findByExample() {
+  public void findBySpec() throws ParseException {
     Approve example = new Approve();
     example.setProcessDefinitionKey("%cess1");
-    example.setProcessDefinitionVersion("1");
-
+    example.setEndDate(formatter.parse("03.02.2014"));
     PlainSpecification<Approve> spec1 = new PlainSpecification<Approve>(new SearchCriteria("processDefinitionKey", "like", example.getProcessDefinitionKey()));
     PlainSpecification<Approve> spec2 = new PlainSpecification<Approve>(
-            new SearchCriteria("processDefinitionVersion", "=", example.getProcessDefinitionVersion()));
+            new SearchCriteria("endDate", "<", example.getEndDate()));
     List<Approve> approves = (List<Approve>) repository.findAll(Specifications.where(spec1).and(spec2));
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
-    assertEquals(approves.get(0), repository.findOne(1L));
+    assertEquals(approves.get(0), approve1);
   }
+  @Test
+  public void findByExample() throws ParseException {
+    Approve example = new Approve();
+    example.setProcessDefinitionKey("%cess1");
+    example.setEndDate(formatter.parse("01.01.2015"));
+    Specifications<Approve> specs= specificationConvertService.getSpecByExample(example);
+    List<Approve> approves = (List<Approve>) repository.findAll(specs);
+    assertNotNull(approves);
+    assertEquals(approves.size(), 1);
+    assertEquals(approves.get(0), approve2);
+  }
+
 }

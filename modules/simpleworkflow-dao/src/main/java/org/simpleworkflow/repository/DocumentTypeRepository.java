@@ -1,10 +1,9 @@
 package org.simpleworkflow.repository;
 
-import org.simpleworkflow.domain.ApproveType;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.simpleworkflow.domain.DocumentType;
+import org.simpleworkflow.repository.iface.JpaCrudRepository;
 import org.springframework.stereotype.Repository;
 @Repository
-public interface DocumentTypeRepository extends CrudRepository<ApproveType, Long>, PagingAndSortingRepository<ApproveType, Long> {
+public interface DocumentTypeRepository extends JpaCrudRepository<DocumentType, Long> {
 
 }

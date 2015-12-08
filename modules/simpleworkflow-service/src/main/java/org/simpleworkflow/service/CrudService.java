@@ -1,13 +1,16 @@
 package org.simpleworkflow.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.simpleworkflow.domain.AbstractEntity;
+import org.simpleworkflow.repository.iface.JpaCrudRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
-public interface CrudService<T extends AbstractEntity, R extends PagingAndSortingRepository<T, Long>> {
+public interface CrudService<T extends AbstractEntity, R extends JpaCrudRepository<T, Long>> {
 	/**
 	 * Set repository
 	 *
@@ -99,7 +102,7 @@ public interface CrudService<T extends AbstractEntity, R extends PagingAndSortin
 	 */
 	Page<T> findAll(Pageable pageRequest);
 
-	public Page<T> findPaginated(Integer page, Integer size, String direction, String properties);
+	public Page<T> findPaginated(Integer pageNumber, Integer pageSize, String direction, String properties);
 
 	/**
 	 * Count all resources.
@@ -108,5 +111,39 @@ public interface CrudService<T extends AbstractEntity, R extends PagingAndSortin
 	 */
 	Long count();
 
+  T findOne(T example);
 
+  /**
+   * Returns all entities matching the given {@link Specification}.
+   * 
+   * @param example
+   * @return
+   */
+  List<T> findAll(T example);
+
+  /**
+   * Returns a {@link Page} of entities matching the given {@link Specification}.
+   * 
+   * @param example
+   * @param pageable
+   * @return
+   */
+  Page<T> findAll(T example, Pageable pageable);
+
+  /**
+   * Returns all entities matching the given {@link Specification} and {@link Sort}.
+   * 
+   * @param example
+   * @param sort
+   * @return
+   */
+  List<T> findAll(T example, Sort sort);
+
+  /**
+   * Returns the number of instances that the given {@link Specification} will return.
+   * 
+   * @param example the {@link Specification} to count instances for
+   * @return the number of instances
+   */
+  long count(T example);
 }

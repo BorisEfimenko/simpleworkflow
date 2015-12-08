@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="DOC_TYPE")
-public class DocType extends AbstractEntity {
+public class DocumentType extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "TYPE_NAME", nullable = false)

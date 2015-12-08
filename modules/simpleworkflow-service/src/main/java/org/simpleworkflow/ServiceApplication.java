@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 // @EnableTransactionManagement
 // @EnableJpaRepositories(basePackages = "org.simpleworkflow.repository")
 
-public class JpaApplication {
+public class ServiceApplication {
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(JpaApplication.class, args);
+		SpringApplication.run(ServiceApplication.class, args);
 
 	}
 

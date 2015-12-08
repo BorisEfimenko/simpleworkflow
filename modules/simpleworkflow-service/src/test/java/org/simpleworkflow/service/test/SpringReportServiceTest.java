@@ -19,13 +19,14 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.fest.assertions.api.Assertions;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.simpleworkflow.JpaApplication;
+import org.simpleworkflow.ServiceApplication;
 import org.simpleworkflow.domain.Report;
 import org.simpleworkflow.exception.NotFoundException;
 import org.simpleworkflow.repository.ReportRepository;
@@ -39,23 +40,22 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = JpaApplication.class)
+@SpringApplicationConfiguration(classes = ServiceApplication.class)
 @TestPropertySource(value = { "classpath:/application-dao.properties", "classpath:/application-dao-dev.properties" })
 public class SpringReportServiceTest {
 
-  private static ReportRepository reportRepository = mock(ReportRepository.class);
+  private final ReportRepository reportRepository = mock(ReportRepository.class);
   @Autowired
   private ReportService reportService;
   private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
 
   private Report report;
   private final List<Report> allReports = new ArrayList<Report>();
-  public static boolean isInited = false;
+  @Rule
+  public ExternalResource resource = new ExternalResource() {
 
-  @Before
-  public void setUp() throws ParseException {
-    if (!isInited) {
-      isInited = true;
+    @Override
+    protected void before() throws ParseException {
       report = new Report();
       report.setId(1L);
       report.setName("testReport");
@@ -92,8 +92,8 @@ public class SpringReportServiceTest {
       when(reportRepository.findAll(any(PageRequest.class))).thenReturn(new PageImpl<Report>(allReports));
       when(reportRepository.count()).thenReturn((long) allReports.size());
     }
-  }
-
+  };
+  
   @Test
   public void testCreate() throws ParseException {
     Report toCreate = new Report();

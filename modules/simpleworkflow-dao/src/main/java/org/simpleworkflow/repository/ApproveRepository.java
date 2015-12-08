@@ -4,15 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.simpleworkflow.domain.Approve;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.simpleworkflow.repository.iface.JpaCrudRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ApproveRepository extends CrudRepository<Approve, Long>, PagingAndSortingRepository<Approve, Long>, JpaSpecificationExecutor<Approve> {
+public interface ApproveRepository extends JpaCrudRepository<Approve, Long> {
 	@Query(" from Approve a where a.approveType.id=:approve_type_id")
 	List<Approve> findByType(@Param("approve_type_id") Long approveTypeID);
 
