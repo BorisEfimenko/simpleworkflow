@@ -23,14 +23,10 @@ import org.junit.runner.RunWith;
 import org.simpleworkflow.RepositoryApplication;
 import org.simpleworkflow.domain.Approve;
 import org.simpleworkflow.domain.ApproveType;
-import org.simpleworkflow.repository.specification.PlainSpecification;
-import org.simpleworkflow.repository.specification.SearchCriteria;
-import org.simpleworkflow.repository.specification.SpecificationConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -47,8 +43,6 @@ public class ApproveRepositoryIntegrationTests {
   ApproveRepository repository;
   private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
   Approve approve1, approve2, approve3, approve4;
-  @Autowired
-  SpecificationConvertService specificationConvertService;
 
   @Rule
   public ExternalResource resource = new ExternalResource() {
@@ -61,7 +55,6 @@ public class ApproveRepositoryIntegrationTests {
       approve4 = repository.findOne(4L);
     }
   };
-
 
   @Test
   public void findAll() {
@@ -100,29 +93,6 @@ public class ApproveRepositoryIntegrationTests {
   }
 
   @Test
-  public void findBySpec() throws ParseException {
-    Approve example = new Approve();
-    example.setProcessDefinitionKey("%cess1");
-    example.setEndDate(formatter.parse("03.02.2014"));
-    PlainSpecification<Approve> spec1 = new PlainSpecification<Approve>(new SearchCriteria("processDefinitionKey", "like", example.getProcessDefinitionKey()));
-    PlainSpecification<Approve> spec2 = new PlainSpecification<Approve>(new SearchCriteria("endDate", "<", example.getEndDate()));
-    List<Approve> approves = (List<Approve>) repository.findAll(Specifications.where(spec1).and(spec2));
-    assertNotNull(approves);
-    assertEquals(approves.size(), 1);
-    assertEquals(approves.get(0), approve1);
-  }
-  @Test
-  public void findByExample() throws ParseException {
-    Approve example = new Approve();
-    example.setProcessDefinitionKey("%cess1");
-    example.setEndDate(formatter.parse("01.01.2015"));
-    Specifications<Approve> specs = specificationConvertService.getSpecByExample(example);
-    List<Approve> approves = (List<Approve>) repository.findAll(specs);
-    assertNotNull(approves);
-    assertEquals(approves.size(), 1);
-    assertEquals(approves.get(0), approve2);
-  }
-  @Test
   public void qbeSimple() throws ParseException {
 
     Approve example = new Approve();
@@ -150,7 +120,7 @@ public class ApproveRepositoryIntegrationTests {
     ApproveType approveType = new ApproveType();
     approveType.setId(2l);
     example.setApproveType(approveType);
-    List<Approve> approves = repository.qbe(example);  
+    List<Approve> approves = repository.qbe(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve4);
@@ -163,7 +133,7 @@ public class ApproveRepositoryIntegrationTests {
     ApproveType approveType = new ApproveType();
     approveType.setName("%2");
     example.setApproveType(approveType);
-    List<Approve> approves = repository.qbe(example);  
+    List<Approve> approves = repository.qbe(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve4);
