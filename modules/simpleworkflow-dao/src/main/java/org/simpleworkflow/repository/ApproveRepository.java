@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.simpleworkflow.domain.Approve;
-import org.simpleworkflow.repository.support.JpaCrudRepository;
+import org.simpleworkflow.repository.support.ExampleCrudRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ApproveRepository extends JpaCrudRepository<Approve, Long> {
+public interface ApproveRepository extends ExampleCrudRepository<Approve, Long> {
 	@Query(" from Approve a where a.approveType.id=:approve_type_id")
 	List<Approve> findByType(@Param("approve_type_id") Long approveTypeID);
 

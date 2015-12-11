@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.simpleworkflow.domain.AbstractEntity;
-import org.simpleworkflow.repository.support.JpaCrudRepository;
+import org.simpleworkflow.repository.support.ExampleCrudRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
-public interface CrudService<T extends AbstractEntity, R extends JpaCrudRepository<T, Long>> {
+public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepository<T, Long>> {
 	/**
 	 * Set repository
 	 *

@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -97,7 +101,7 @@ public class ApproveRepositoryIntegrationTests {
 
     Approve example = new Approve();
     example.setId(4L);
-    List<Approve> approves = repository.qbe(example);
+    List<Approve> approves = repository.findAll(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve4);
@@ -108,7 +112,7 @@ public class ApproveRepositoryIntegrationTests {
     Approve example = new Approve();
     example.setId(2L);
     example.setProcessDefinitionKey("%Cess1");
-    List<Approve> approves = repository.qbe(example);
+    List<Approve> approves = repository.findAll(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve2);
@@ -120,7 +124,7 @@ public class ApproveRepositoryIntegrationTests {
     ApproveType approveType = new ApproveType();
     approveType.setId(2l);
     example.setApproveType(approveType);
-    List<Approve> approves = repository.qbe(example);
+    List<Approve> approves = repository.findAll(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve4);
@@ -133,9 +137,33 @@ public class ApproveRepositoryIntegrationTests {
     ApproveType approveType = new ApproveType();
     approveType.setName("%2");
     example.setApproveType(approveType);
-    List<Approve> approves = repository.qbe(example);
+    List<Approve> approves = repository.findAll(example);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve4);
   }
+  
+  @Test
+  public void qbeWithPageAndSort() throws ParseException {
+    Approve example = new Approve();
+    ApproveType approveType = new ApproveType();
+    approveType.setName("%");
+    example.setApproveType(approveType);
+    
+    List<Approve> approves = (List<Approve>) repository.findAll(example);
+    int count = approves.size();
+    assertThat(count, greaterThan(1));
+    int halfCount = Math.round(count / 2);
+    PageRequest pageRequest = new PageRequest(0, halfCount);
+    List<Order> orders=new ArrayList<Order>();
+    orders.add(new Order(Direction.DESC,"endDate"));
+    orders.add(new Order(Direction.DESC,"id"));
+    Sort sort= new Sort(orders);
+    Page<Approve> firstPage = repository.findAll(example, pageRequest, sort );
+    assertEquals(firstPage.getTotalElements(), count);
+    assertEquals(firstPage.getContent().size(), halfCount);
+    Page<Approve> lastPage = repository.findAll(example, pageRequest.next());
+    assertEquals(lastPage.getContent().size(), count - halfCount);
+    Page<Approve> missingPage = repository.findAll(example, pageRequest.next().next());
+    assertEquals(missingPage.getContent().size(), 0);  }
 }

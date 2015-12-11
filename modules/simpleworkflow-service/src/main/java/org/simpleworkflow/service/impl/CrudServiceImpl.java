@@ -8,17 +8,16 @@ import javax.transaction.Transactional;
 
 import org.simpleworkflow.domain.AbstractEntity;
 import org.simpleworkflow.exception.NotFoundException;
-import org.simpleworkflow.repository.support.JpaCrudRepository;
+import org.simpleworkflow.repository.support.ExampleCrudRepository;
 import org.simpleworkflow.service.CrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 
 @Transactional
-public class CrudServiceImpl<T extends AbstractEntity, R extends JpaCrudRepository<T, Long>>
+public class CrudServiceImpl<T extends AbstractEntity, R extends ExampleCrudRepository<T, Long>>
 		implements CrudService<T, R> {
 	
 	protected R repository;
@@ -123,9 +122,8 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends JpaCrudReposito
 	}
 
   @Override
-  public T findOne(T example) {
-    Specification<T> spec=getSpecByExample(example);     
-    return repository.findOne(spec);
+  public T findOne(T example) {   
+    return repository.findOne(example);
   }
 
   @Override
@@ -152,10 +150,6 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends JpaCrudReposito
     return 0;
   }
 
-  private Specification<T> getSpecByExample(T example) {
-    // TODO Auto-generated method stub
 
-    return null;
-  }
 
 }

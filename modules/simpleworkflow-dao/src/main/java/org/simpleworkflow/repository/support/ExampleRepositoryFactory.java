@@ -14,9 +14,9 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.core.RepositoryMetadata;
 
 
-public class ExtJpaRepositoryFactory extends JpaRepositoryFactory {
+public class ExampleRepositoryFactory extends JpaRepositoryFactory {
 
-  public ExtJpaRepositoryFactory(EntityManager entityManager) {
+  public ExampleRepositoryFactory(EntityManager entityManager) {
     super(entityManager);
   }
 
@@ -29,7 +29,7 @@ public class ExtJpaRepositoryFactory extends JpaRepositoryFactory {
     JpaEntityInformation<?, Serializable> entityInformation = getEntityInformation(metadata.getDomainType());
 
     SimpleJpaRepository<?, ?> repo = isQueryDslExecutor(repositoryInterface) ? new QueryDslJpaRepository(
-        entityInformation, entityManager) : new ExtJpaRepository(entityInformation, entityManager);
+        entityInformation, entityManager) : new ExampleRepository(entityInformation, entityManager);
 
     return repo;
   }
@@ -40,7 +40,7 @@ public class ExtJpaRepositoryFactory extends JpaRepositoryFactory {
     if (isQueryDslExecutor(metadata.getRepositoryInterface())) {
       return QueryDslJpaRepository.class;
     } else {
-      return ExtJpaRepository.class;
+      return ExampleRepository.class;
     }
   }
 
