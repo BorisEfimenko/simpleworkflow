@@ -30,7 +30,7 @@ public class DocumentType extends AbstractEntity {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("DocType [id=");
-		builder.append(id);
+	  builder.append(this.getId());
 		builder.append(", name=");
 		builder.append(name);
 		builder.append("]");

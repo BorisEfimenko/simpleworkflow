@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "DOCUMENT")
@@ -18,7 +20,8 @@ public class Document extends AbstractEntity {
   @Column(name = "DOCUMENT_NO", nullable = false)
   private String no;
 
-  @Column(name = "DOCUMENT_DATE", nullable = false)
+  @Column(name = "DOC_DATE")  
+  @Temporal(TemporalType.DATE)
   private Date date;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -53,7 +56,7 @@ public class Document extends AbstractEntity {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("Document [id=");
-    builder.append(id);
+    builder.append(this.getId());
     builder.append(", no=");
     builder.append(no);
     builder.append(", date=");

@@ -18,7 +18,7 @@ public class CriteriaTest {
   @Test
   public void findByExample() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IntrospectionException {
     Approve example = new Approve();
-    example.setProcessDefinitionKey("%cess1");
+        example.setProcessDefinitionKey("%cess1");
     example.setProcessDefinitionVersion("1");
 
     List<PlainSpecification<Approve>> specList = getSpecList(example);

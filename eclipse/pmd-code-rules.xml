@@ -63,9 +63,11 @@
     <rule ref="rulesets/java/design.xml/EqualsNull">
         <priority>5</priority>
     </rule>
+<!-- if(x!=null)
     <rule ref="rulesets/java/design.xml/ConfusingTernary">
         <priority>3</priority>
     </rule>
+-->
     <rule ref="rulesets/java/design.xml/InstantiationToGetClass">
         <priority>3</priority>
     </rule>

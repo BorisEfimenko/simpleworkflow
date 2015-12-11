@@ -14,12 +14,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.EntityManager;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 import org.simpleworkflow.RepositoryApplication;
 import org.simpleworkflow.domain.Approve;
+import org.simpleworkflow.domain.ApproveType;
 import org.simpleworkflow.repository.specification.PlainSpecification;
 import org.simpleworkflow.repository.specification.SearchCriteria;
 import org.simpleworkflow.repository.specification.SpecificationConvertService;
@@ -38,11 +41,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ApproveRepositoryIntegrationTests {
 
   @Autowired
+  EntityManager entityManager;
+
+  @Autowired
   ApproveRepository repository;
   private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
-  Approve approve1, approve2, approve3;
+  Approve approve1, approve2, approve3, approve4;
   @Autowired
   SpecificationConvertService specificationConvertService;
+
   @Rule
   public ExternalResource resource = new ExternalResource() {
 
@@ -51,8 +58,10 @@ public class ApproveRepositoryIntegrationTests {
       approve1 = repository.findOne(1L);
       approve2 = repository.findOne(2L);
       approve3 = repository.findOne(3L);
+      approve4 = repository.findOne(4L);
     }
   };
+
 
   @Test
   public void findAll() {
@@ -96,8 +105,7 @@ public class ApproveRepositoryIntegrationTests {
     example.setProcessDefinitionKey("%cess1");
     example.setEndDate(formatter.parse("03.02.2014"));
     PlainSpecification<Approve> spec1 = new PlainSpecification<Approve>(new SearchCriteria("processDefinitionKey", "like", example.getProcessDefinitionKey()));
-    PlainSpecification<Approve> spec2 = new PlainSpecification<Approve>(
-            new SearchCriteria("endDate", "<", example.getEndDate()));
+    PlainSpecification<Approve> spec2 = new PlainSpecification<Approve>(new SearchCriteria("endDate", "<", example.getEndDate()));
     List<Approve> approves = (List<Approve>) repository.findAll(Specifications.where(spec1).and(spec2));
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
@@ -108,11 +116,56 @@ public class ApproveRepositoryIntegrationTests {
     Approve example = new Approve();
     example.setProcessDefinitionKey("%cess1");
     example.setEndDate(formatter.parse("01.01.2015"));
-    Specifications<Approve> specs= specificationConvertService.getSpecByExample(example);
+    Specifications<Approve> specs = specificationConvertService.getSpecByExample(example);
     List<Approve> approves = (List<Approve>) repository.findAll(specs);
     assertNotNull(approves);
     assertEquals(approves.size(), 1);
     assertEquals(approves.get(0), approve2);
   }
+  @Test
+  public void qbeSimple() throws ParseException {
 
+    Approve example = new Approve();
+    example.setId(4L);
+    List<Approve> approves = repository.qbe(example);
+    assertNotNull(approves);
+    assertEquals(approves.size(), 1);
+    assertEquals(approves.get(0), approve4);
+
+  }
+  @Test
+  public void qbeWithLike() throws ParseException {
+    Approve example = new Approve();
+    example.setId(2L);
+    example.setProcessDefinitionKey("%Cess1");
+    List<Approve> approves = repository.qbe(example);
+    assertNotNull(approves);
+    assertEquals(approves.size(), 1);
+    assertEquals(approves.get(0), approve2);
+
+  }
+  @Test
+  public void qbeWithAssociate() throws ParseException {
+    Approve example = new Approve();
+    ApproveType approveType = new ApproveType();
+    approveType.setId(2l);
+    example.setApproveType(approveType);
+    List<Approve> approves = repository.qbe(example);  
+    assertNotNull(approves);
+    assertEquals(approves.size(), 1);
+    assertEquals(approves.get(0), approve4);
+
+  }
+  @Test
+  public void qbeWithAssociateWithLike() throws ParseException {
+    Approve example = new Approve();
+    example.setEndDate(formatter.parse("01.01.2015"));
+    ApproveType approveType = new ApproveType();
+    approveType.setName("%2");
+    example.setApproveType(approveType);
+    List<Approve> approves = repository.qbe(example);  
+    assertNotNull(approves);
+    assertEquals(approves.size(), 1);
+    assertEquals(approves.get(0), approve4);
+  }
 }

@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "APPROVE")
@@ -17,11 +19,13 @@ public class Approve extends AbstractEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "APPROVE_TYPE_ID", nullable = false)
 	private ApproveType approveType;
-
-	@Column(name = "BEGIN_DATE")	
-	private Date beginDate;
 	
+	@Column(name = "BEGIN_DATE")	
+	@Temporal(TemporalType.DATE)
+	private Date beginDate;
+		
 	@Column(name = "END_DATE")
+	@Temporal(TemporalType.DATE)
 	private Date endDate;
 
 	@Column(name = "PROCESS_DEFINITION_KEY")
@@ -74,7 +78,7 @@ public class Approve extends AbstractEntity {
     public String toString() {
       StringBuilder builder = new StringBuilder();
       builder.append("Approve [id=");
-      builder.append(id);
+      builder.append(this.getId());
       builder.append(", beginDate=");
       builder.append(beginDate);
       builder.append(", endDate=");
@@ -83,9 +87,7 @@ public class Approve extends AbstractEntity {
       builder.append(processDefinitionKey);
       builder.append(", processDefinitionVersion=");
       builder.append(processDefinitionVersion);
-      builder.append(", approveType=");
-      builder.append(id);
-      builder.append(approveType);
+      builder.append("]");      
       return builder.toString();
     }
 

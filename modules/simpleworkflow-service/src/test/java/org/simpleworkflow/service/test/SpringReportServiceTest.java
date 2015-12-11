@@ -53,7 +53,6 @@ public class SpringReportServiceTest {
   private final List<Report> allReports = new ArrayList<Report>();
   @Rule
   public ExternalResource resource = new ExternalResource() {
-
     @Override
     protected void before() throws ParseException {
       report = new Report();

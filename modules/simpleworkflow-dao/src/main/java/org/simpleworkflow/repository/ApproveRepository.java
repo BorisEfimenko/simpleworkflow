@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.simpleworkflow.domain.Approve;
-import org.simpleworkflow.repository.iface.JpaCrudRepository;
+import org.simpleworkflow.repository.support.JpaCrudRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,5 +16,8 @@ public interface ApproveRepository extends JpaCrudRepository<Approve, Long> {
 
 	@Query(" from Approve a where a.approveType.id=:approve_type_id and (:actual_date>=a.beginDate or a.beginDate is null) and (:actual_date<a.endDate or a.endDate is null)")
 	Approve getActualApprove(@Param("approve_type_id") Long approveTypeID, @Param("actual_date") Date actualDate);
+	
+//	 @Query("#{#qbeSQL(:approve)}")
+//	 List<Approve> qbe(@Param("approve") Approve approve);
 
 }

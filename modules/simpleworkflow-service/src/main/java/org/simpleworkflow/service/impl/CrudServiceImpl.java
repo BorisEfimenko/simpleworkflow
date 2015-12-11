@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import org.simpleworkflow.domain.AbstractEntity;
 import org.simpleworkflow.exception.NotFoundException;
-import org.simpleworkflow.repository.iface.JpaCrudRepository;
+import org.simpleworkflow.repository.support.JpaCrudRepository;
 import org.simpleworkflow.service.CrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

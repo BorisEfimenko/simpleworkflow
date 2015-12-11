@@ -12,7 +12,7 @@
 			<column name="ID" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="VERSION" type="bigint" />
+			<column name="VERSION" type="int" />
 			<column name="APPROVE_TYPE_NAME" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
@@ -25,7 +25,7 @@
 			<column name="ID" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="VERSION" type="bigint" />
+			<column name="VERSION" type="int" />
 			<column name="APPROVE_TYPE_ID" type="bigint">
 				<constraints nullable="false" foreignKeyName="FK_APPROVE_APPROVE_TYPE_ID"
 					referencedTableName="APPROVE_TYPE" referencedColumnNames="ID" />
@@ -45,11 +45,11 @@
 		</createTable>
 	</changeSet>
 	<changeSet id="create table doc_type" author="redfox">
-		<createTable schemaName="swf" tableName="DOCUMENT_TYPE">
+		<createTable schemaName="swf" tableName="DOC_TYPE">
 			<column name="ID" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="VERSION" type="bigint" />
+			<column name="VERSION" type="int" />
 			<column name="TYPE_NAME" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
@@ -59,23 +59,22 @@
 			</column>
 		</createTable>
 	</changeSet>
-	<changeSet id="create table document" author="redfox">
+		<changeSet id="create table document" author="redfox">
 		<createTable schemaName="swf" tableName="DOCUMENT">
 			<column name="ID" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="VERSION" type="bigint" />
+			<column name="VERSION" type="int" />
 			<column name="DOCUMENT_NO" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
 			<column name="DOC_DATE" type="date">
 				<constraints nullable="false" />
 			</column>
-			<column name="DOCUMENT_TYPE_ID" type="bigint">
+			<column name="DOC_TYPE_ID" type="bigint">
 				<constraints nullable="false" foreignKeyName="FK_DOCUMENT_DOC_TYPE_ID"
-					referencedTableName="DOCUMENT_TYPE" referencedColumnNames="ID" />
+					referencedTableName="DOC_TYPE" referencedColumnNames="ID" />
 			</column>
 		</createTable>
 	</changeSet>
-
 </databaseChangeLog>
