@@ -1,29 +1,15 @@
 package org.simpleworkflow;
 
-import org.simpleworkflow.service.ReportService;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-// @EntityScan(basePackages="org.simpleworkflow.domain")
-// @EnableTransactionManagement
-// @EnableJpaRepositories(basePackages = "org.simpleworkflow.repository")
-
+@PropertySource(value = { "classpath:/application-dao.properties", "classpath:/application-dao-prod.properties", "classpath:/application-service.properties",
+    "classpath:/application-service-prod.properties" })
 public class ServiceApplication {
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(ServiceApplication.class, args);
 
-	}
-
-	@Bean
-	InitializingBean testInitializer(final ReportService reportService) {
-
-		return new InitializingBean() {
-			public void afterPropertiesSet() throws Exception {
-				reportService.findAll();
-			}
-		};
-	}
+  public static void main(String[] args) throws Exception {
+    SpringApplication.run(ServiceApplication.class, args);
+  }
 }

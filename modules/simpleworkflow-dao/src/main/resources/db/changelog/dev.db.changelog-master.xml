@@ -8,5 +8,5 @@
 	<!-- Should be only links to per-version cumulative changelog files. -->
 	<include file="db.changelog-master.xml" relativeToChangelogFile="true"/>
 	<!-- fill table -->
-	<include file="load-data.xml" relativeToChangelogFile="true"/>
+	<include file="dev-load-data.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

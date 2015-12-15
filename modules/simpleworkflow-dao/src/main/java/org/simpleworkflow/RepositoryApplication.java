@@ -1,12 +1,12 @@
 package org.simpleworkflow;
 
-import org.simpleworkflow.repository.support.ExampleRepositoryFactoryBean;
+import org.simpleworkflow.repository.support.ExampleRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 // fix for extend JpaRepositiry. Latest version spring data have parameter ?JpaRepositiryClass?
-@EnableJpaRepositories(repositoryFactoryBeanClass = ExampleRepositoryFactoryBean.class )
+@EnableJpaRepositories(repositoryBaseClass=ExampleRepository.class/*repositoryFactoryBeanClass = ExampleRepositoryFactoryBean.class*/ )
 @SpringBootApplication
 @PropertySource(value = { "classpath:/application-dao.properties","classpath:/application-dao-prod.properties"}) 
 public class RepositoryApplication {

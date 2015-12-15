@@ -71,6 +71,9 @@
 			<column name="DOC_DATE" type="date">
 				<constraints nullable="false" />
 			</column>
+			<column name="APPROVED" type="char(1)">
+				<constraints nullable="false" />
+			</column>
 			<column name="DOC_TYPE_ID" type="bigint">
 				<constraints nullable="false" foreignKeyName="FK_DOCUMENT_DOC_TYPE_ID"
 					referencedTableName="DOC_TYPE" referencedColumnNames="ID" />

@@ -7,9 +7,9 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.simpleworkflow.domain.AbstractEntity;
-import org.simpleworkflow.exception.NotFoundException;
 import org.simpleworkflow.repository.support.ExampleCrudRepository;
 import org.simpleworkflow.service.CrudService;
+import org.simpleworkflow.service.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends ExampleCrudRepo
 	@Transactional
 	public T update(T resource) {
 		Assert.notNull(resource, "Resource can't be null");
-		T retrievedResource = this.findById(resource.getId());
+		T retrievedResource = this.findOne(resource.getId());
 		if (retrievedResource == null) {
 			throw new NotFoundException();
 		}
@@ -71,7 +71,7 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends ExampleCrudRepo
 	}
 
 	@Override
-	public T findById(Long id) {
+	public T findOne(Long id) {
 		Assert.notNull(id, "Resource Long can't be null");
 		T entity = repository.findOne(id);
 		if (entity == null) {
@@ -128,27 +128,46 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends ExampleCrudRepo
 
   @Override
   public List<T> findAll(T example) {
-    // TODO Auto-generated method stub
-    return null;
+    return repository.findAll(example);
   }
 
   @Override
   public Page<T> findAll(T example, Pageable pageable) {
-    // TODO Auto-generated method stub
-    return null;
+    return repository.findAll(example, pageable);
   }
 
   @Override
   public List<T> findAll(T example, Sort sort) {
-    // TODO Auto-generated method stub
-    return null;
+    return repository.findAll(example, sort);
   }
 
   @Override
   public long count(T example) {
-    // TODO Auto-generated method stub
-    return 0;
+    return repository.count(example);
   }
+
+  @Override
+  public Page<T> findAll(T example, Pageable pageable, Sort sort) {
+    return repository.findAll(example,pageable, sort);
+  }
+
+  @Override
+  public Page<T> findPaginated(T example, Integer pageNumber, Integer pageSize, String direction, String properties) {    
+      Integer iPage = (pageNumber == null) ? 1 : pageNumber;
+      Integer iSize = (pageSize == null) ? 10 : pageSize;
+      Assert.isTrue(pageNumber > 0, "Page index must be greater than 0");
+      Assert.isTrue(
+          direction.isEmpty() || direction.equalsIgnoreCase(Sort.Direction.ASC.toString())
+              || direction.equalsIgnoreCase(Sort.Direction.DESC.toString()),
+          "Direction should be ASC or DESC");
+      if (direction.isEmpty()) {
+        return this.repository.findAll(example, new PageRequest(iPage - 1, iSize));
+      } else {
+        Assert.notNull(properties);
+        return this.repository.findAll(example, new PageRequest(iPage - 1, iSize,
+            new Sort(Sort.Direction.fromString(direction.toUpperCase(Locale.ENGLISH)), properties.split(","))));
+      }
+    }
 
 
 

@@ -1,15 +1,11 @@
 package org.simpleworkflow.repository.support;
 
-import static org.springframework.data.querydsl.QueryDslUtils.QUERY_DSL_PRESENT;
-
-import java.io.Serializable;
+import static org.springframework.data.querydsl.QueryDslUtils.*;
 
 import javax.persistence.EntityManager;
 
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.core.RepositoryMetadata;
 
@@ -19,7 +15,7 @@ public class ExampleRepositoryFactory extends JpaRepositoryFactory {
   public ExampleRepositoryFactory(EntityManager entityManager) {
     super(entityManager);
   }
-
+  /*
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   protected <T, ID extends Serializable> SimpleJpaRepository<?, ?> getTargetRepository(RepositoryMetadata metadata,
@@ -33,7 +29,7 @@ public class ExampleRepositoryFactory extends JpaRepositoryFactory {
 
     return repo;
   }
-
+*/
   @Override
   protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
 

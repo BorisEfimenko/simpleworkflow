@@ -14,7 +14,12 @@ public class DocumentType extends AbstractEntity {
 
 	@Column(name = "TYPE_NAME", nullable = false)
 	private String name;
-
+	
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "APPROVE_TYPE_ID", nullable = true)
+  private ApproveType approveType;
+  
+  
 	public String getName() {
 		return name;
 	}
@@ -22,20 +27,26 @@ public class DocumentType extends AbstractEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "APPROVE_TYPE_ID", nullable = true)
-	private ApproveType approve;
-	
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("DocType [id=");
-	  builder.append(this.getId());
-		builder.append(", name=");
-		builder.append(name);
-		builder.append("]");
-		return builder.toString();
-	}
+  
+  public ApproveType getApproveType() {
+    return approveType;
+  }
+
+  
+  public void setApproveType(ApproveType approveType) {
+    this.approveType = approveType;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("DocType [id=");
+    builder.append(this.getId());
+    builder.append(", name=");
+    builder.append(name);
+    builder.append("]");
+    return builder.toString();
+  }
 
 
 }

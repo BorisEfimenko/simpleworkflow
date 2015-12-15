@@ -2,6 +2,7 @@ package org.simpleworkflow.repository.support;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.FixedExample;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -72,21 +74,28 @@ public class ExampleRepository<T> extends SimpleJpaRepository<T, Long> implement
   @SuppressWarnings("unchecked")
   private List<T> findByExample(Object example, Sort sort) {
     DetachedCriteria detachedCriteria = createDetachedCriteriaByExample(example, sort);
+    addSort(sort, detachedCriteria);
     Session session = (Session) em.getDelegate();
     Criteria criteria = detachedCriteria.getExecutableCriteria(session);
 
-    return (List<T>) criteria.list();
+    return criteria.list();
   }
 
   @SuppressWarnings("unchecked")
   private Page<T> pageByExample(T example, Pageable pageable, Sort sort) {
     DetachedCriteria detachedCriteria = createDetachedCriteriaByExample(example, sort);
     Session session = (Session) em.getDelegate();
-    Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-    criteria.setFirstResult((pageable.getPageNumber() - 1) * pageable.getPageSize());
-    criteria.setMaxResults(pageable.getPageSize());
-    return new PageImpl<T>((List<T>) criteria.list());
 
+    int total = ((Number) detachedCriteria.getExecutableCriteria(session).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+    detachedCriteria.setResultTransformer(Criteria.ROOT_ENTITY);
+    detachedCriteria.setProjection(null);
+
+    addSort(sort, detachedCriteria);
+
+    List<T> resultList = detachedCriteria.getExecutableCriteria(session).setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize()).list();
+    List<T> content = total > pageable.getOffset() ? resultList : Collections.<T> emptyList();
+
+    return new PageImpl<T>(content, pageable, total);
   }
   private DetachedCriteria createDetachedCriteriaByExample(Object example, Sort sort) {
     Assert.notNull(example, "The example must not be null!");
@@ -104,13 +113,16 @@ public class ExampleRepository<T> extends SimpleJpaRepository<T, Long> implement
         }
       }
     }
+    return detachedCriteria;
+  }
+
+  private void addSort(Sort sort, DetachedCriteria detachedCriteria) {
     if (sort != null) {
       List<org.hibernate.criterion.Order> orders = toOrders(sort);
       for (org.hibernate.criterion.Order order : orders) {
-        detachedCriteria = detachedCriteria.addOrder(order);
+        detachedCriteria.addOrder(order);
       }
     }
-    return detachedCriteria;
   }
   public static List<org.hibernate.criterion.Order> toOrders(Sort sort) {
 

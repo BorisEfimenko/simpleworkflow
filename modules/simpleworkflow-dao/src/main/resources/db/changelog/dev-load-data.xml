@@ -7,8 +7,8 @@
 
 	<changeSet id="load data for test database" author="redfox">
 
-		<loadData schemaName="swf" tableName="APPROVE_TYPE" file="db/csv/approve_type.csv"
-			separator=",">
+		<loadData schemaName="swf" tableName="APPROVE_TYPE"
+			file="db/csv/approve_type.csv" separator=",">
 			<column name="ID" type="NUMERIC" />
 			<column name="VERSION" type="NUMERIC" />
 			<column name="APPROVE_TYPE_NAME" type="STRING" />
@@ -21,8 +21,23 @@
 			<column name="APPROVE_TYPE_ID" type="NUMERIC" />
 			<column name="BEGIN_DATE" type="DATE" />
 			<column name="END_DATE" type="DATE" />
-			<column name="PROCESS_DEFINITION_KEY" type="STRING"/>
-			<column name="PROCESS_DEFINITION_VERSION" type="STRING"/>
+			<column name="PROCESS_DEFINITION_KEY" type="STRING" />
+			<column name="PROCESS_DEFINITION_VERSION" type="STRING" />
+		</loadData>
+		<loadData schemaName="swf" tableName="DOC_TYPE" file="db/csv/doc_type.csv"
+			separator=",">
+			<column name="ID" type="NUMERIC" />
+			<column name="VERSION" type="NUMERIC" />
+			<column name="TYPE_NAME" type="STRING" />
+			<column name="APPROVE_TYPE_ID" type="STRING" />
+		</loadData>
+		<loadData schemaName="swf" tableName="DOCUMENT" file="db/csv/document.csv"
+			separator=",">			
+			<column name="ID" type="NUMERIC" />
+			<column name="VERSION" type="NUMERIC" />
+			<column name="DOC_TYPE_ID" type="NUMERIC" />
+			<column name="DOCUMENT_NO" type="STRING" />
+			<column name="DOC_DATE" type="DATE" />
 		</loadData>
 	</changeSet>
 

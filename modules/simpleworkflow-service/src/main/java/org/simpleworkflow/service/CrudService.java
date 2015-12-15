@@ -3,12 +3,12 @@ package org.simpleworkflow.service;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.criterion.Example;
 import org.simpleworkflow.domain.AbstractEntity;
 import org.simpleworkflow.repository.support.ExampleCrudRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 
 public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepository<T, Long>> {
 	/**
@@ -68,7 +68,7 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
 	 *            Resource id
 	 * @return resource
 	 */
-	T findById(Long id);
+	T findOne(Long id);
 
 	/**
 	 * Find resources by their ids.
@@ -111,10 +111,16 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
 	 */
 	Long count();
 
+  /**
+   * Returns a single entity matching the given {@link Example}.
+   * 
+   * @param example
+   * @return
+   */
   T findOne(T example);
 
   /**
-   * Returns all entities matching the given {@link Specification}.
+   * Returns all entities matching the given {@link Example}.
    * 
    * @param example
    * @return
@@ -122,7 +128,7 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
   List<T> findAll(T example);
 
   /**
-   * Returns a {@link Page} of entities matching the given {@link Specification}.
+   * Returns a {@link Page} of entities matching the given {@link Example}.
    * 
    * @param example
    * @param pageable
@@ -131,7 +137,7 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
   Page<T> findAll(T example, Pageable pageable);
 
   /**
-   * Returns all entities matching the given {@link Specification} and {@link Sort}.
+   * Returns all entities matching the given {@link Example} and {@link Sort}.
    * 
    * @param example
    * @param sort
@@ -140,10 +146,21 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
   List<T> findAll(T example, Sort sort);
 
   /**
-   * Returns the number of instances that the given {@link Specification} will return.
+   * Returns the number of instances that the given {@link Example} will return.
    * 
-   * @param example the {@link Specification} to count instances for
+   * @param example the {@link Example} to count instances for
    * @return the number of instances
    */
   long count(T example);
+  /**
+   * Returns a {@link Page} of entities matching the given {@link Example} and {@link Sort}.
+   * 
+   * @param example
+   * @param pageable
+   * @param sort
+   * @return
+   */
+  Page<T> findAll(T example, Pageable pageable, Sort sort);
+  
+  public Page<T> findPaginated(T example, Integer pageNumber, Integer pageSize, String direction, String properties);
 }

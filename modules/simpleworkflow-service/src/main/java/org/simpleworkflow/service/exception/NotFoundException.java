@@ -1,4 +1,4 @@
-package org.simpleworkflow.exception;
+package org.simpleworkflow.service.exception;
 
 
 public class NotFoundException extends RuntimeException {
