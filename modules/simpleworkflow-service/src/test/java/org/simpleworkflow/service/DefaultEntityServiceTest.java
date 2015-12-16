@@ -3,17 +3,16 @@ package org.simpleworkflow.service;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.fest.assertions.api.Assertions;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
@@ -42,7 +41,7 @@ public class DefaultEntityServiceTest {
   private final ApproveRepository approveRepository = mock(ApproveRepository.class);
   @Autowired
   private ApproveService approveService;
-  private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+  private final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
 
   private Approve approve;
   private final List<Approve> allApproves = new ArrayList<Approve>();
@@ -52,11 +51,11 @@ public class DefaultEntityServiceTest {
     protected void before() throws ParseException {
       approve = new Approve();
       approve.setId(1L);      
-      approve.setBeginDate(formatter.parse("11.11.2014"));
-      approve.setEndDate(formatter.parse("11.11.2015"));
+      approve.setBeginDate(formatter.parseLocalDate("11.11.2014"));
+      approve.setEndDate(formatter.parseLocalDate("11.11.2015"));
       Approve secondApprove = new Approve();
       secondApprove.setId(2L);
-      approve.setBeginDate(formatter.parse("01.01.2000"));
+      approve.setBeginDate(formatter.parseLocalDate("01.01.2000"));
 
       allApproves.add(approve);
       allApproves.add(secondApprove);
@@ -90,8 +89,8 @@ public class DefaultEntityServiceTest {
   public void testCreate() throws ParseException {
     Approve toCreate = new Approve();
     toCreate.setId(999L);
-    toCreate .setBeginDate(formatter.parse("01.01.2010"));
-    toCreate .setEndDate(formatter.parse("01.01.2015"));
+    toCreate .setBeginDate(formatter.parseLocalDate("01.01.2010"));
+    toCreate .setEndDate(formatter.parseLocalDate("01.01.2015"));
     Approve created = approveService.create(toCreate);
 
     verify(approveRepository).save(toCreate);
@@ -107,8 +106,8 @@ public class DefaultEntityServiceTest {
   public void testUpdate() throws ParseException {
     Approve toUpdate = new Approve();
     toUpdate.setId(1L);
-    toUpdate.setBeginDate(formatter.parse("01.01.2012"));
-    toUpdate.setEndDate(formatter.parse("01.01.2013"));
+    toUpdate.setBeginDate(formatter.parseLocalDate("01.01.2012"));
+    toUpdate.setEndDate(formatter.parseLocalDate("01.01.2013"));
     Approve updated = approveService.update(toUpdate);
 
     verify(approveRepository).save(toUpdate);

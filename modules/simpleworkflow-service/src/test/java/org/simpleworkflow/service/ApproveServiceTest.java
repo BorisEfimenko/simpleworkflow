@@ -2,12 +2,8 @@ package org.simpleworkflow.service;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import org.camunda.bpm.engine.ProcessEngine;
@@ -15,6 +11,9 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
@@ -45,7 +44,7 @@ public class ApproveServiceTest {
   ProcessEngine processEngine;
   @Autowired
   RuntimeService runtimeService;
-  private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+  private final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
   private Approve approve1, approve2, approve3;
   private Document document2;
   @Rule
@@ -65,13 +64,13 @@ public class ApproveServiceTest {
 
   @Test
   public void testGetActualApprove() throws ParseException {
-    Date date = formatter.parse("01.01.2000");
+    LocalDate date = formatter.parseLocalDate("01.01.2000");
     Approve actualApprove = service.getActualApprove(1l, date);
     assertEquals(actualApprove, approve1);
-    date = formatter.parse("01.06.2014");
+    date = formatter.parseLocalDate("01.06.2014");
     actualApprove = service.getActualApprove(1l, date);
     assertEquals(actualApprove, approve2);
-    date = formatter.parse("01.07.2015");
+    date = formatter.parseLocalDate("01.07.2015");
     actualApprove = service.getActualApprove(1l, date);
     assertEquals(actualApprove, approve3);
   }

@@ -1,15 +1,14 @@
 package org.simpleworkflow.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "APPROVE")
@@ -21,12 +20,12 @@ public class Approve extends AbstractEntity {
 	private ApproveType approveType;
 	
 	@Column(name = "BEGIN_DATE")	
-	@Temporal(TemporalType.DATE)
-	private Date beginDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate beginDate;
 		
 	@Column(name = "END_DATE")
-	@Temporal(TemporalType.DATE)
-	private Date endDate;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate endDate;
 
 	@Column(name = "PROCESS_DEFINITION_KEY")
 	private String processDefinitionKey;
@@ -42,19 +41,19 @@ public class Approve extends AbstractEntity {
 	    this.approveType = approveType;
 	  }
 
-	  public Date getBeginDate() {
+	  public LocalDate getBeginDate() {
 	    return beginDate;
 	  }
 
-	  public void setBeginDate(Date beginDate) {
+	  public void setBeginDate(LocalDate beginDate) {
 	    this.beginDate = beginDate;
 	  }
 
-	  public Date getEndDate() {
+	  public LocalDate getEndDate() {
 	    return endDate;
 	  }
 
-	  public void setEndDate(Date endDate) {
+	  public void setEndDate(LocalDate endDate) {
 	    this.endDate = endDate;
 	  }
 

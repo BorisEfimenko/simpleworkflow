@@ -82,14 +82,14 @@ public class CrudServiceImpl<T extends AbstractEntity, R extends ExampleCrudRepo
 	}
 
 	@Override
-	public Iterable<T> findByIds(Set<Long> ids) {
+	public List<T> findByIds(Set<Long> ids) {
 		Assert.notNull(ids, "Resource ids can't be null");
-		return repository.findAll(ids);
+		return (List<T>) repository.findAll(ids);
 	}
 
 	@Override
-	public Iterable<T> findAll() {
-		return repository.findAll();
+	public List<T> findAll() {
+		return (List<T>) repository.findAll();
 	}
 
 	@Override

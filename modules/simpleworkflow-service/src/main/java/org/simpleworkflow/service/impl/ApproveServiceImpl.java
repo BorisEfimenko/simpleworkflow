@@ -1,12 +1,12 @@
 package org.simpleworkflow.service.impl;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.joda.time.LocalDate;
 import org.simpleworkflow.domain.Approve;
 import org.simpleworkflow.repository.ApproveRepository;
 import org.simpleworkflow.service.ApproveService;
@@ -36,7 +36,7 @@ public class ApproveServiceImpl extends CrudServiceImpl<Approve, ApproveReposito
   }
 
   @Override
-  public Approve getActualApprove(Long approveTypeID, Date actualDate) {
+  public Approve getActualApprove(Long approveTypeID, LocalDate actualDate) {
     return repository.getActualApprove(approveTypeID, actualDate);
   }
 

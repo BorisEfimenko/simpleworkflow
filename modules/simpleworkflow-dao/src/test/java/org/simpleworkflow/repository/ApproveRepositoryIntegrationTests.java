@@ -1,22 +1,17 @@
 package org.simpleworkflow.repository;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.EntityManager;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
@@ -45,7 +40,7 @@ public class ApproveRepositoryIntegrationTests {
 
   @Autowired
   ApproveRepository repository;
-  private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+  private final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
   Approve approve1, approve2, approve3, approve4;
 
   @Rule
@@ -68,13 +63,13 @@ public class ApproveRepositoryIntegrationTests {
 
   @Test
   public void getActualApprove() throws ParseException {
-    Date date = formatter.parse("01.01.2000");
+    LocalDate date = formatter.parseLocalDate("01.01.2000");
     Approve actualApprove = repository.getActualApprove(1l, date);
     assertThat(actualApprove, is(equalTo(approve1)));
-    date = formatter.parse("01.06.2014");
+    date = formatter.parseLocalDate("01.06.2014");
     actualApprove = repository.getActualApprove(1l, date);
     assertThat(actualApprove, is(approve2));
-    date = formatter.parse("01.07.2015");
+    date = formatter.parseLocalDate("01.07.2015");
     actualApprove = repository.getActualApprove(1l, date);
     assertThat(actualApprove, is(approve3));
   }
@@ -133,7 +128,7 @@ public class ApproveRepositoryIntegrationTests {
   @Test
   public void qbeWithAssociateWithLike() throws ParseException {
     Approve example = new Approve();
-    example.setEndDate(formatter.parse("01.01.2015"));
+    example.setEndDate(formatter.parseLocalDate("01.01.2015"));
     ApproveType approveType = new ApproveType();
     approveType.setName("%2");
     example.setApproveType(approveType);
@@ -150,7 +145,7 @@ public class ApproveRepositoryIntegrationTests {
     approveType.setName("%");
     example.setApproveType(approveType);
     
-    List<Approve> approves = (List<Approve>) repository.findAll(example);
+    List<Approve> approves = repository.findAll(example);
     int count = approves.size();
     assertThat(count, greaterThan(1));
     int halfCount = Math.round(count / 2);

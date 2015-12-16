@@ -77,14 +77,14 @@ public interface CrudService<T extends AbstractEntity, R extends ExampleCrudRepo
 	 *            Resource ids
 	 * @return a list of retrieved resources, empty if no resource found
 	 */
-	Iterable<T> findByIds(Set<Long> ids);
+	List<T> findByIds(Set<Long> ids);
 
 	/**
 	 * Find all resources.
 	 *
 	 * @return a list of all resources.
 	 */
-	Iterable<T> findAll();
+	List<T> findAll();
 
 	/**
 	 * Find all resources (pageable).

@@ -1,7 +1,5 @@
 package org.simpleworkflow.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -9,9 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 import org.simpleworkflow.domain.converter.BooleanToStringConverter;
 
 @Entity
@@ -24,8 +22,8 @@ public class Document extends AbstractEntity {
   private String no;
 
   @Column(name = "DOC_DATE", nullable = false)
-  @Temporal(TemporalType.DATE)
-  private Date date;
+  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+  private LocalDate date;
 
   @Column(name = "APPROVED", columnDefinition="char", length=1, nullable = false)
   @Convert(converter = BooleanToStringConverter.class)
@@ -43,11 +41,11 @@ public class Document extends AbstractEntity {
     this.no = no;
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
