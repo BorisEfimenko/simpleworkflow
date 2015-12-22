@@ -3,6 +3,7 @@ package org.simpleworkflow.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.simpleworkflow.domain.Approve;
 import org.simpleworkflow.domain.ApproveType;
 import org.simpleworkflow.domain.Document;
@@ -33,7 +34,7 @@ public class DocumentServiceImpl extends CrudServiceImpl<Document, DocumentRepos
   }
 
   @Override
-  public void startApprove(Long id) {
+  public  ProcessInstance  startApprove(Long id) {
     Assert.notNull(id, "The document.id must not be null!");
     Document document = repository.findOne(id);
     if (document == null) {
@@ -44,7 +45,7 @@ public class DocumentServiceImpl extends CrudServiceImpl<Document, DocumentRepos
     Approve approve = approveService.getActualApprove(approveType.getId(), document.getDate());
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("documentID", id);
-    approveService.startProcess(approve, variables);
+    return approveService.startProcess(approve, variables);
 
   }
 

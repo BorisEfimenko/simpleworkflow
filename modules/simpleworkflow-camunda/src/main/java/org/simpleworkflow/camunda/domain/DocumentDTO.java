@@ -1,4 +1,4 @@
-package org.simpleworkflow.model;
+package org.simpleworkflow.camunda.domain;
 
 import org.joda.time.LocalDate;
 

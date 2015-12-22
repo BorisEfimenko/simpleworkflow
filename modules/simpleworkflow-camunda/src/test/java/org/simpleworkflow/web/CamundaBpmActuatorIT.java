@@ -2,6 +2,7 @@ package org.simpleworkflow.web;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.simpleworkflow.WebApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +16,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.assertTrue;
 
-import org.simpleworkflow.camunda.Application;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
+@SpringApplicationConfiguration(classes = {WebApplication.class})
 @WebAppConfiguration
 @IntegrationTest({"server.port=0", "management.security.enabled:false"})
 @DirtiesContext

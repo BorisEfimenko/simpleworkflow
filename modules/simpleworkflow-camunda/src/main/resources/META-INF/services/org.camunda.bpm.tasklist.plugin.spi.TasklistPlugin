@@ -1,0 +1,2 @@
+org.camunda.bpm.tasklist.impl.plugin.standalonetask.StandaloneTaskPlugin
+org.simpleworkflow.camunda.plugin.sampletask.SampleTaskPlugin

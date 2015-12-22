@@ -1,0 +1,30 @@
+{
+  "name": "simpleworkflow-plugin-static",
+  "version": "1.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BorisEfimenko/simpleworkflow"
+  },
+  "author": "Boris Efimenko <Boris.Efimenko@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/BorisEfimenko/simpleworkflow/issues"
+  },
+  "homepage": "https://github.com/BorisEfimenko/simpleworkflow",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-grunt": "^0.2.4",
+    "load-grunt-tasks": "^3.4.0",
+    "lodash": "^3.10.1",
+    "requirejs-text": "2.0.12"
+  },
+  "config": {
+    "pluginSourceDir": "client/plugin",
+    "pluginBuildTarget": "src/main/webapp/plugin"
+  }
+}

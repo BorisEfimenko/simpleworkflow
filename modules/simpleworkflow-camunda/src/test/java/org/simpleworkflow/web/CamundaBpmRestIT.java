@@ -1,9 +1,9 @@
 package org.simpleworkflow.web;
 
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
-import org.simpleworkflow.camunda.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.simpleworkflow.WebApplication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -17,7 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
+@SpringApplicationConfiguration(classes = {WebApplication.class})
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
 @DirtiesContext

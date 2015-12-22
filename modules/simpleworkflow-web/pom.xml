@@ -79,6 +79,13 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-joda</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -86,18 +93,7 @@
 			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
 				<configuration> <mainClass>${start-class}</mainClass> <layout>WAR</layout> 
 				</configuration> <executions> <execution> <goals> <goal>repackage</goal> 
-				</goals> </execution> </executions> </plugin> -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework</groupId>
-						<artifactId>springloaded</artifactId>
-						<version>1.2.5.RELEASE</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+-->				
 			<plugin>
 				<!-- http://maven.apache.org/plugins/maven-eclipse-plugin/ -->
 				<groupId>org.apache.maven.plugins</groupId>

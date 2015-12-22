@@ -11,10 +11,11 @@
 	<version>1.0.0</version>
 
 	<modules>
-		<module>modules/simpleworkflow-camunda</module>
 		<module>modules/simpleworkflow-domain</module>
 		<module>modules/simpleworkflow-dao</module>
 		<module>modules/simpleworkflow-service</module>
+		<module>modules/simpleworkflow-plugin-static</module>
+		<module>modules/simpleworkflow-camunda</module>
 		<module>modules/simpleworkflow-web</module>
 	</modules>
 
