@@ -37,13 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApproveServiceTest {
 
   @Autowired
-  ApproveService service;
+  private ApproveService service;
   @Autowired
-  DocumentService documentService;
+  private DocumentService documentService;
   @Autowired
-  ProcessEngine processEngine;
+  private ProcessEngine processEngine;
   @Autowired
-  RuntimeService runtimeService;
+  private RuntimeService runtimeService;
   private final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
   private Approve approve1, approve2, approve3;
   private Document document2;
@@ -83,8 +83,9 @@ public class ApproveServiceTest {
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("documentID", document2.getId());
     ProcessInstance processInstance = service.startProcess(approve2, variables);
-    ProcessInstance result = runtimeService.createProcessInstanceQuery().variableValueEquals("documentID", approve2.getId()).singleResult();
+    ProcessInstance result = runtimeService.createProcessInstanceQuery().variableValueEquals("documentID", document2.getId()).singleResult();
     assertNotNull(result);
+    assertNotNull(processInstance);
     assertEquals(result.getId(), processInstance.getId());
     Document updatedDocument = documentService.findOne(document2.getId());
     assertEquals(updatedDocument.isApproved(), true);
