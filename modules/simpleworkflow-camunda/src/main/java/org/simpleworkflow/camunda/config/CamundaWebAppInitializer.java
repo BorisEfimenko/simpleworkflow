@@ -11,7 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.camunda.bpm.admin.impl.web.AdminApplication;
+import org.camunda.bpm.admin.impl.web.FixAdminApplication;
 import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
 import org.camunda.bpm.cockpit.impl.web.bootstrap.CockpitContainerBootstrap;
@@ -66,7 +66,7 @@ public class CamundaWebAppInitializer implements WebApplicationInitializer {// i
 		registerServlet("Cockpit Api",/* ServletContainer.class,*/ cockpitApiParameters, "/api/cockpit/*");
 
 		HashMap<String, String> adminApiParameters = new HashMap<>();
-		adminApiParameters.put("javax.ws.rs.Application", AdminApplication.class.getName());
+		adminApiParameters.put("javax.ws.rs.Application", FixAdminApplication.class.getName());
 		adminApiParameters.put("resteasy.servlet.mapping.prefix", "/api/admin");
 		registerServlet("Admin Api", /* ServletContainer.class,*/ adminApiParameters, "/api/admin/*");
 
@@ -104,22 +104,8 @@ public class CamundaWebAppInitializer implements WebApplicationInitializer {// i
 
 		return filterRegistration;
 	}
-/*
-	private ServletRegistration registerServlet(final String servletName, final Class<? extends Servlet> servletClass,
-			final Map<String, String> initParameters, final String... urlPatterns) {
-		ServletRegistration servletRegistration = servletContext.getServletRegistration(servletName);
 
-		if (servletRegistration == null) {
-			servletRegistration = servletContext.addServlet(servletName, servletClass);
-			servletRegistration.addMapping(urlPatterns);
-			servletRegistration.setInitParameters(initParameters);
-
-			LOGGER.debug("Servlet {} for URL {} registered.", servletName, urlPatterns);
-		}
-
-		return servletRegistration;
-	}
-*/	
+	
 	private ServletRegistration registerServlet(final String servletName,
 			final Map<String, String> initParameters, final String... urlPatterns) {
 		ServletRegistration servletRegistration = servletContext.getServletRegistration(servletName);
@@ -134,14 +120,5 @@ public class CamundaWebAppInitializer implements WebApplicationInitializer {// i
 
 		return servletRegistration;
 	}
-	/*
-	 public ServletRegistrationBean registerServlet(final String servletName, 
-				final Map<String, String> initParameters, final String... urlPatterns) {
-         final ServletRegistrationBean registrationBean = new ServletRegistrationBean();
-         registrationBean.setServlet(new HttpServletDispatcher());
-         registrationBean.setName(servletName);
-         registrationBean.addUrlMappings(urlPatterns);         
-         registrationBean.setInitParameters(initParameters);
-         return registrationBean;
- }	*/
+
 }
